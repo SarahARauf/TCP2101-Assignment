@@ -3,24 +3,21 @@
 #include <map>
 #include <sstream>
 
-
 using namespace std;
 
-
-//Idea, make finding datatype a separate function, and possible returing a pointer with the appropriate datatype 
+// Idea, make finding datatype a separate function, and possible returing a pointer with the appropriate datatype
 
 struct DeclObject // A struct to declare the syntax of our DSL command
 {
-    string cmd;      // Var
-    string dstype;   // Type of datastructure/or variable
-    string itemtype; // The datatype of the variable
-    string dsName;   // name given
-    string getItemtype() { return itemtype; } //Returns datatype
-    string getDsName() { return dsName;}
+    string cmd;                               // Var
+    string dstype;                            // Type of datastructure/or variable
+    string itemtype;                          // The datatype of the variable
+    string dsName;                            // name given
+    string getItemtype() { return itemtype; } // Returns datatype
+    string getDsName() { return dsName; }
 };
 
-
-template <typename T> //Template, so that a variable can accept any datatype
+template <typename T> // Template, so that a variable can accept any datatype
 struct Variable : public DeclObject
 {
     // string name;
@@ -29,7 +26,7 @@ struct Variable : public DeclObject
     // Some overloading, to distinguish between value assignment or variable assignment
     void setValue(const Variable &val) // For assigning a variable to this variable //= <var> <var1>
     {
-        value = val.value; //the value of val is assigned to this value
+        value = val.value; // the value of val is assigned to this value
     }
 
     void setValue(T val) // for assigning a value to this variable //= <var> <value>
@@ -37,16 +34,304 @@ struct Variable : public DeclObject
         value = val;
     }
 
-    T getValue(){
-        //cout << "inside the function:" << value << endl;
+    T getValue()
+    {
+        // cout << "inside the function:" << value << endl;
         return value;
     }
-
-    // void print()
-    // {
-    //     cout << value << endl;
-    // }
 };
+
+template <typename T> // Template, so that a variable can accept any datatype
+struct operations
+{
+    map<string, DeclObject *> runningProgram;
+    string varType;
+
+    operations(map<string, DeclObject *> &runningProgram, string var)
+    {
+        this->runningProgram = runningProgram;
+        string varType = runningProgram[var]->getItemtype();
+    }
+
+    void assg_commands(string var, string value) // op = operation, var = variable to assign value to, assg = value or variable to assign from
+    {
+        if (runningProgram.find(value) != runningProgram.end())
+        {
+            assignVariable(var, value);
+        }
+        else
+        {
+            assignValue(var, value);
+        }
+    }
+
+    void print_command(string var)
+    {
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        if (varType == "bool")
+        {
+            cout << boolalpha << vptr->getValue() << endl;
+        }
+        else
+        {
+            cout << vptr->getValue() << endl;
+        }
+    }
+
+    void addition(string var, string value)
+    {
+        if (runningProgram.find(value) != runningProgram.end())
+        {
+            additionVariable(var, value);
+        }
+        else
+        {
+            additionValue(var, value);
+        }
+    }
+
+    void subtraction(string var, string value)
+    {
+        if (runningProgram.find(value) != runningProgram.end())
+        {
+            subtractionVariable(var, value);
+        }
+        else
+        {
+            subtractionValue(var, value);
+        }
+    }
+
+    void multiplication(string var, string value)
+    {
+        if (runningProgram.find(value) != runningProgram.end())
+        {
+            multiplicationVariable(var, value);
+        }
+        else
+        {
+            multiplicationValue(var, value);
+        }
+    }
+
+    void division(string var, string value)
+    {
+        if (runningProgram.find(value) != runningProgram.end())
+        {
+            divisionVariable(var, value);
+        }
+        else
+        {
+            divisionValue(var, value);
+        }
+    }
+
+    void mod(string var, string value)
+    {
+        if (runningProgram.find(value) != runningProgram.end())
+        {
+            modVariable(var, value);
+        }
+        else
+        {
+            modValue(var, value);
+        }
+    }
+
+private:
+    void assignValue(string var, string value)
+    {
+        T val;
+        istringstream(value) >> val;
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+
+        vptr->setValue(val);
+    }
+
+    void assignVariable(string var, string value)
+    {
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
+        vptr->setValue(*vptr2);
+    }
+
+    void additionVariable(string var, string value)
+    {
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
+        T addend1 = vptr->getValue();
+        T addend2 = vptr2->getValue();
+        T sum1 = addend1 + addend2;
+        ostringstream oss;
+        oss << sum1;
+        string sum2 = oss.str();
+        assignValue(var, sum2);
+    }
+
+    void additionValue(string var, string value)
+    {
+        T addend2;
+        istringstream(value) >> addend2;
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        T addend1 = vptr->getValue();
+        T sum1 = addend1 + addend2;
+        ostringstream oss;
+        oss << sum1;
+        string sum2 = oss.str();
+        assignValue(var, sum2);
+    }
+
+    void subtractionVariable(string var, string value)
+    {
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
+        T minuend = vptr->getValue();
+        T subtrahend = vptr2->getValue();
+        T difference1 = minuend - subtrahend;
+        ostringstream oss;
+        oss << difference1;
+        string difference2 = oss.str();
+        assignValue(var, difference2);
+    }
+
+    void subtractionValue(string var, string value)
+    {
+        T subtrahend;
+        istringstream(value) >> subtrahend;
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        T minuend = vptr->getValue();
+        T difference1 = minuend - subtrahend;
+        ostringstream oss;
+        oss << difference1;
+        string difference2 = oss.str();
+        assignValue(var, difference2);
+    }
+
+    void multiplicationVariable(string var, string value)
+    {
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
+        T multiplicand = vptr->getValue();
+        T multiplier = vptr2->getValue();
+        T product1 = multiplicand * multiplier;
+        ostringstream oss;
+        oss << product1;
+        string product2 = oss.str();
+        assignValue(var, product2);
+    }
+
+    void multiplicationValue(string var, string value)
+    {
+        T multiplier;
+        istringstream(value) >> multiplier;
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        T multiplicand = vptr->getValue();
+        T product1 = multiplicand * multiplier;
+        ostringstream oss;
+        oss << product1;
+        string product2 = oss.str();
+        assignValue(var, product2);
+    }
+
+    void divisionVariable(string var, string value)
+    {
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
+        T dividend = vptr->getValue();
+        T divisor = vptr2->getValue();
+        T quotient1 = dividend / divisor;
+        ostringstream oss;
+        oss << quotient1;
+        string quotient2 = oss.str();
+        assignValue(var, quotient2);
+
+    }
+
+    void divisionValue(string var, string value)
+    {
+        T divisor;
+        istringstream(value) >> divisor;
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        T dividend = vptr->getValue();
+        T quotient1 = dividend / divisor;
+        ostringstream oss;
+        oss << quotient1;
+        string quotient2 = oss.str();
+        assignValue(var, quotient2);
+
+    }
+
+    void modVariable(string var, string value)
+    {
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
+        T dividend = vptr->getValue();
+        T divisor = vptr2->getValue();
+        T remainder1 = dividend % divisor;
+        ostringstream oss;
+        oss << remainder1;
+        string remainder2 = oss.str();
+        assignValue(var, remainder2);
+
+    }
+
+    void modValue(string var, string value)
+    {
+        T divisor;
+        istringstream(value) >> divisor;
+        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
+        T dividend = vptr->getValue();
+        T remainder1 = dividend % divisor;
+        ostringstream oss;
+        oss << remainder1;
+        string remainder2 = oss.str();
+        assignValue(var, remainder2);
+
+    }
+
+};
+
+template <class T>
+class StackNode{
+    public:
+    int data;
+    StackNode* next;
+};
+
+StackNode* newNode(int data) {
+    StackNode* stackNode = new StackNode();
+    stackNode->data = data;
+    stackNode->next = NULL;
+    return stackNode;
+}
+
+int isEmpty(StackNode *root) {
+    return !root;
+}
+
+void push(StackNode** root, int new_data){
+    StackNode* stackNode = newNode(new_data);
+    stackNode->next = *root;
+    *root = stackNode;
+    cout << new_data << endl;
+}
+
+int pop(StackNode** root){
+    if (isEmpty(*root))
+    return -1;
+    StackNode* temp = *root;
+    *root = (*root)->next;
+    int popped = temp->data;
+    free(temp);
+
+    return popped;
+}
+int peek(StackNode* root)
+{
+    if (isEmpty(root))
+    return -1;
+    return root-> data;
+}
 
 // Ignore all this for now:
 struct Datastruct : public DeclObject
@@ -109,20 +394,67 @@ public:
         }
         return counter;
     }
-    
-    void deallocProgram(){
-        for (auto &item : runningProgram) {
+
+    void deallocProgram()
+    {
+        for (auto &item : runningProgram)
+        {
             delete item.second;
             item.second = nullptr;
         }
         runningProgram.clear();
     }
 
+    // void doOperations(string commandType, string var, stringstream &s, )
+    // {
+    //     if (commandType.compare("=") == 0)
+    //     {
+    //         string value;
+    //         s >> value;
+    //         o.assg_commands(var, value);
+    //     }
+    //     if (commandType.compare("+") == 0)
+    //     {
+    //         string value;
+    //         s >> value;
+    //         o.addition(var, value);
+    //     }
+    //     if (commandType.compare("-") == 0)
+    //     {
+    //         string value;
+    //         s >> value;
+    //         o.subtraction(var, value);
+    //     }
+    //     if (commandType.compare("*") == 0)
+    //     {
+    //         string value;
+    //         s >> value;
+    //         o.multiplication(var, value);
+    //     }
+    //     if (commandType.compare("/") == 0)
+    //     {
+    //         string value;
+    //         s >> value;
+    //         o.division(var, value);
+    //     }
+    //     if (commandType.compare("%") == 0)
+    //     {
+    //         string value;
+    //         s >> value;
+    //         o.mod(var, value);
+    //     }
+    //     if (commandType.compare("print") == 0)
+    //     {
+    //         o.print_command(var);
+    //     }
+
+    // };
+
     void parseCommands()
     {
         for (auto c : commands) // for each of the user's commands
         {
-            //cout << c << endl;
+            // cout << c << endl;
             stringstream s(c);              // allows you to read a string as if it were a stream (like cin)
             int numOfWords = countWords(c); // count the number of words in a user's command
             string commandType;
@@ -160,7 +492,7 @@ public:
                         v->itemtype = varType;
                         s >> v->dsName;
                         runningProgram[v->dsName] = v;
-                        //cout << "Here, I'm creating var: " << &v << endl;
+                        // cout << "Here, I'm creating var: " << &v << endl;
                     }
                     else if (varType == "bool")
                     {
@@ -183,136 +515,132 @@ public:
                 }
             }
 
-            if (commandType.compare("=") == 0) //= <var> <value>, = <var> <var1>
-            {
-                string var;
-                s >> var;                                            // var name
-                string varType = runningProgram[var]->getItemtype(); // to get the datatype of var
-                string value; // either <value> or <var1>
-                s >> value;
-                if (runningProgram.find(value) != runningProgram.end()) // for variable assignment  = <var> <var1>
-                {//if the value is a variable name that is located in the runningProgram map:
-                    if (varType == "integer")
-                    {
-                        //runningProgram[] is a DeclObject pointer, which is a parent class to Variable, 
-                        //so in order to use the subclass method (in this case setValue) we need to downcast the DeclObject pointer to a Variable pointer
-                        Variable<int> *vptr = static_cast<Variable<int> *>(runningProgram[var]);
-                        Variable<int> *vptr2 = static_cast<Variable<int> *>(runningProgram[value]);
-                        vptr->setValue(*vptr2); //Passing vptr2
-
-                    }
-                    if (varType == "real")
-                    {
-                        Variable<double> *vptr = static_cast<Variable<double> *>(runningProgram[var]);
-                        Variable<double> *vptr2 = static_cast<Variable<double> *>(runningProgram[value]);
-                        vptr->setValue(*vptr2);
-                    }
-                    if (varType == "bool")
-                    {
-                        Variable<bool> *vptr = static_cast<Variable<bool> *>(runningProgram[var]);
-                        Variable<bool> *vptr2 = static_cast<Variable<bool> *>(runningProgram[value]);
-                        vptr->setValue(*vptr2);
-                    }
-                    if (varType == "pointer") // Need further clarification on this
-                    {
-                        void *value;
-                    };
-
-                }
-                else //for value assignment //= <var> <value>
-                {//if the value is not a variable name:
-                    //cout <<var <<":" <<value << endl;
-                    if (varType == "integer")
-                    {
-                        Variable<int> *vptr = static_cast<Variable<int> *>(runningProgram[var]);
-                        vptr->setValue(stoi(value)); //stoi will turn the value (which is currently a string) into an integer
-                    }
-                    if (varType == "real")
-                    {
-                        Variable<double> *vptr = static_cast<Variable<double> *>(runningProgram[var]);
-                        vptr->setValue(stod(value)); //stod will turn the value (which is currently a string) into an decimal
-                    }
-                    if (varType == "bool")
-                    {
-                        //turning the string value into a boolean (theres no other way to change the type of a string into a bool using sto_)
-                        bool bvalue;
-                        istringstream(value) >> bvalue;  //stringstream for value is created so that it can be assigned into a bool variable
-                        Variable<bool> *vptr = static_cast<Variable<bool> *>(runningProgram[var]);
-                        vptr->setValue(bvalue);
-                    }
-                    if (varType == "pointer") // Need further clarification on this
-                    {
-                        void *value;
-                    };
-                }
-
-            }
-
-            if (commandType.compare("+") == 0)
+            if (commandType.compare("=") == 0 || commandType.compare("+") == 0 || commandType.compare("-") == 0 || commandType.compare("*") == 0 || commandType.compare("/") == 0 || commandType.compare("%") == 0 || commandType.compare("print") == 0) // need to distinguish between print ds v print variable
             {
                 string var;
                 s >> var;
-                string varType = runningProgram[var]->getItemtype(); // to get the datatype of var
-                string value; // either <value> or <var1>
-                s >> value;
-
-            }
-
-            if (commandType.compare("print") == 0) 
-            { 
-                //prints the value according to the name of the variable
-
-                //runningProgram[var] is a DeclObject pointer, which is the parent class to the Variable subclass, 
-                //hence, to access the methods (in this case, the getValue method, which resides in the Variable class) of the subclass, 
-                //we need to downcast the DeclObject pointer to a Variable pointer
-                string var;
-                s >> var;
-                string varType = runningProgram[var]->getItemtype(); // to get the datatype of var 
+                string varType = runningProgram[var]->getItemtype();
                 if (varType == "integer")
                 {
-                    Variable<int> *vptr = static_cast<Variable<int>*>(runningProgram[var]);
-                    cout << vptr->getValue() << endl;
-                    //cout << vptr -> getDsName() << endl;
+                    operations<int> o(runningProgram, var);
+
+                    //doOperations(commandType, )
+                    if (commandType.compare("=") == 0)
+                    {
+                        string value;
+                        s >> value;
+                        o.assg_commands(var, value);
+                    }
+                    if (commandType.compare("+") == 0)
+                    {
+                        string value;
+                        s >> value;
+                        o.addition(var, value);
+                    }
+                    if (commandType.compare("-") == 0)
+                    {
+                        string value;
+                        s >> value;
+                        o.subtraction(var, value);
+                    }
+                    if (commandType.compare("*") == 0)
+                    {
+                        string value;
+                        s >> value;
+                        o.multiplication(var, value);
+                    }
+                    if (commandType.compare("/") == 0)
+                    {
+                        string value;
+                        s >> value;
+                        o.division(var, value);
+                    }
+                    if (commandType.compare("%") == 0)
+                    {
+                        string value;
+                        s >> value;
+                        o.mod(var, value);
+                    }
+                    if (commandType.compare("print") == 0)
+                    {
+                        o.print_command(var);
+                    }
                 }
-                else if (varType == "real")
+                if (varType == "real")
                 {
-                    Variable<double> *vptr = static_cast<Variable<double>*>(runningProgram[var]);
-                    cout << vptr->getValue() <<endl;
+                    operations<double> s(runningProgram, var);
                 }
-                else if (varType == "bool")
+                if (varType == "bool")
                 {
-                    Variable<bool> *vptr = static_cast<Variable<bool>*>(runningProgram[var]);
-                    cout << boolalpha << vptr->getValue() << endl;
+                    operations<bool> s(runningProgram, var);
                 }
-                
+                if (varType == "pointer")
+                {
+                    operations<void *> s(runningProgram, var);
+                }
+
+
+                // if (commandType.compare("=") == 0) //= <var> <value>, = <var> <var1>
+                // {
+                //     string var;
+                //     s >> var;                                            // var name
+                //     // string varType = runningProgram[var]->getItemtype(); // to get the datatype of var
+                //     string value;                                        // either <value> or <var1>
+                //     s >> value;
+                //     operations s(runningProgram, var);
+                //     s.assg_commands(var, value);
+
+                // }
+
+                // if (commandType.compare("+") == 0)
+                // {
+                //     string var;
+                //     s >> var;
+                //     //string varType = runningProgram[var]->getItemtype(); // to get the datatype of var
+                //     string value;                                        // either <value> or <var1>
+                //     s >> value;
+                // }
+
+                // if (commandType.compare("print") == 0)
+                // {
+                //     // prints the value according to the name of the variable
+
+                //     // runningProgram[var] is a DeclObject pointer, which is the parent class to the Variable subclass,
+                //     // hence, to access the methods (in this case, the getValue method, which resides in the Variable class) of the subclass,
+                //     // we need to downcast the DeclObject pointer to a Variable pointer
+                //     string var;
+                //     s >> var;
+                //     operations s(runningProgram, var);
+                //     s.print_command(var);
+
+                // }
             }
 
-            //Will implement later:
-            // if (commandType.compare("Delete") == 0)
-            // {
-            //     string dsName;
-            //     s >> dsName;
-            //     runningProgram.erase(v.dsName == dsName);
-            // }
+            // Will implement later:
+            //  if (commandType.compare("Delete") == 0)
+            //  {
+            //      string dsName;
+            //      s >> dsName;
+            //      runningProgram.erase(v.dsName == dsName);
+            //  }
         }
     }
 
-    //May be deleted later:
-    // void print()
-    // {
-    //     for (auto c : commands)
-    //     {
-    //         cout << c << endl;
-    //     }
-    // }
+    // May be deleted later:
+    //  void print()
+    //  {
+    //      for (auto c : commands)
+    //      {
+    //          cout << c << endl;
+    //      }
+    //  }
 };
 
 int main()
 {
     Program p;
-    //p.print();
+    // p.print();
     p.parseCommands();
     p.deallocProgram();
     cout << "Program ended" << endl;
-    
 }
