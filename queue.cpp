@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
+using namespace std; 
 
 template <typename T>
-class Queue {
+struct Queue {
  private:
-  std::vector<T> queue;
+  vector<T> queue; // declare the queue
 
  public:
   void Push(const T& val) { queue.push_back(val); } // add an elemnt to the back of queue
@@ -22,39 +23,44 @@ int main() {
   q.Push(5);
   q.Push(2);
     
-  std::cout << "Elements in queue: ";
+  
+  cout << "Elements in queue: ";
   for (int i = 0; i < q.Size(); i++) {
-    std::cout << q.Front() << ":";
+    
+    cout << q.Front() << ":";
     q.Push(q.Front());
     q.Pop();
   }
-  std::cout << std::endl;
-   std::cout << "Size: " << q.Size() << std::endl; 
   
-  std::cout << "Queue is not empty" << std::endl;
+  cout << endl;
+  cout << "Size: " << q.Size() << endl; 
+  
+  
+  cout << "Queue is not empty" << endl;
 
   while (!q.Empty()) {
-    std::cout << "Elements in queue: ";
-    std::cout << q.Front() << ":";
-    std::cout << "\n" << std::endl;
+    cout << "Elements in queue: ";
+    cout << q.Front() << ":";
+    cout << "\n" << endl;
     q.Pop();
-    std::cout << "Size: " << q.Size() << std::endl;
+    cout << "Size: " << q.Size() << endl;
   }
 
   if (q.Empty()) {
     std::cout << "Queue is empty" << std::endl;
   } else {
-    std::cout << "Size: " << q.Size() << std::endl;  
-    std::cout << "Front: " << q.Front() << std::endl; 
-    std::cout << "Back: " << q.Back() << std::endl;  
+   
+    cout << "Size: " << q.Size() << endl;  
+    cout << "Front: " << q.Front() << endl; 
+    cout << "Back: " << q.Back() << endl;  
   }
 
   q.Pop();
   if (q.Empty()) {
-    std::cout << "Queue is empty" << std::endl;
+    cout << "Queue is empty" << endl;
   } else {
-    std::cout << "Size: " << q.Size() << std::endl;  
-    std::cout << "Front: " << q.Front() << std::endl; 
+    cout << "Size: " << q.Size() << endl;  
+    cout << "Front: " << q.Front() << endl; 
   }
 
   return 0;
