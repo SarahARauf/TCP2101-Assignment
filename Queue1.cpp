@@ -5,8 +5,6 @@
 
 using namespace std;
 
-// Idea, make finding datatype a separate function, and possible returing a pointer with the appropriate datatype
-
 struct DeclObject // A struct to declare the syntax of our DSL command
 {
     string cmd;                               // Var
@@ -42,260 +40,8 @@ struct Variable : public DeclObject
     }
 };
 
-template <typename T> // Template, so that a variable can accept any datatype
-struct operations
-{
-    map<string, DeclObject *> runningProgram;
 
-    operations(map<string, DeclObject *> &runningProgram)
-    {
-        this->runningProgram = runningProgram;
-    }
-
-    void assg_commands(string var, string value) // op = operation, var = variable to assign value to, assg = value or variable to assign from
-    {
-        if (runningProgram.find(value) != runningProgram.end())
-        {
-            assignVariable(var, value);
-        }
-        else
-        {
-            assignValue(var, value);
-        }
-    }
-
-    void print_command(string var)
-    {
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        string varType = runningProgram[var]->getItemtype();
-
-        if (varType == "bool")
-        {
-            cout << boolalpha << vptr->getValue() << endl;
-        }
-        else
-        {
-            cout << vptr->getValue() << endl;
-        }
-    }
-
-    void addition(string var, string value)
-    {
-        if (runningProgram.find(value) != runningProgram.end())
-        {
-            additionVariable(var, value);
-        }
-        else
-        {
-            additionValue(var, value);
-        }
-    }
-
-    void subtraction(string var, string value)
-    {
-        if (runningProgram.find(value) != runningProgram.end())
-        {
-            subtractionVariable(var, value);
-        }
-        else
-        {
-            subtractionValue(var, value);
-        }
-    }
-
-    void multiplication(string var, string value)
-    {
-        if (runningProgram.find(value) != runningProgram.end())
-        {
-            multiplicationVariable(var, value);
-        }
-        else
-        {
-            multiplicationValue(var, value);
-        }
-    }
-
-    void division(string var, string value)
-    {
-        if (runningProgram.find(value) != runningProgram.end())
-        {
-            divisionVariable(var, value);
-        }
-        else
-        {
-            divisionValue(var, value);
-        }
-    }
-
-    void mod(string var, string value)
-    {
-        if (runningProgram.find(value) != runningProgram.end())
-        {
-            modVariable(var, value);
-        }
-        else
-        {
-            modValue(var, value);
-        }
-    }
-
-private:
-    void assignValue(string var, string value)
-    {
-        T val;
-        istringstream(value) >> val;
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        vptr->setValue(val);
-
-        // T val;
-        // istringstream(value) >> val;
-        // Variable<T> *vptr = runningProgram[var];
-        // vptr->setValue(val);
-    }
-
-    void assignVariable(string var, string value)
-    {
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
-        vptr->setValue(*vptr2);
-    }
-
-    void additionVariable(string var, string value)
-    {
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
-        T addend1 = vptr->getValue();
-        T addend2 = vptr2->getValue();
-        T sum1 = addend1 + addend2;
-        ostringstream oss;
-        oss << sum1;
-        string sum2 = oss.str();
-        assignValue(var, sum2);
-    }
-
-    void additionValue(string var, string value)
-    {
-        T addend2;
-        istringstream(value) >> addend2;
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        T addend1 = vptr->getValue();
-        T sum1 = addend1 + addend2;
-        ostringstream oss;
-        oss << sum1;
-        string sum2 = oss.str();
-        assignValue(var, sum2);
-    }
-
-    void subtractionVariable(string var, string value)
-    {
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
-        T minuend = vptr->getValue();
-        T subtrahend = vptr2->getValue();
-        T difference1 = minuend - subtrahend;
-        ostringstream oss;
-        oss << difference1;
-        string difference2 = oss.str();
-        assignValue(var, difference2);
-    }
-
-    void subtractionValue(string var, string value)
-    {
-        T subtrahend;
-        istringstream(value) >> subtrahend;
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        T minuend = vptr->getValue();
-        T difference1 = minuend - subtrahend;
-        ostringstream oss;
-        oss << difference1;
-        string difference2 = oss.str();
-        assignValue(var, difference2);
-    }
-
-    void multiplicationVariable(string var, string value)
-    {
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
-        T multiplicand = vptr->getValue();
-        T multiplier = vptr2->getValue();
-        T product1 = multiplicand * multiplier;
-        ostringstream oss;
-        oss << product1;
-        string product2 = oss.str();
-        assignValue(var, product2);
-    }
-
-    void multiplicationValue(string var, string value)
-    {
-        T multiplier;
-        istringstream(value) >> multiplier;
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        T multiplicand = vptr->getValue();
-        T product1 = multiplicand * multiplier;
-        ostringstream oss;
-        oss << product1;
-        string product2 = oss.str();
-        assignValue(var, product2);
-    }
-
-    void divisionVariable(string var, string value)
-    {
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
-        T dividend = vptr->getValue();
-        T divisor = vptr2->getValue();
-        T quotient1 = dividend / divisor;
-        ostringstream oss;
-        oss << quotient1;
-        string quotient2 = oss.str();
-        assignValue(var, quotient2);
-
-    }
-
-    void divisionValue(string var, string value)
-    {
-        T divisor;
-        istringstream(value) >> divisor;
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        T dividend = vptr->getValue();
-        T quotient1 = dividend / divisor;
-        ostringstream oss;
-        oss << quotient1;
-        string quotient2 = oss.str();
-        assignValue(var, quotient2);
-
-    }
-
-    void modVariable(string var, string value)
-    {
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        Variable<T> *vptr2 = static_cast<Variable<T> *>(runningProgram[value]);
-        T dividend = vptr->getValue();
-        T divisor = vptr2->getValue();
-        T remainder1 = dividend % divisor;
-        ostringstream oss;
-        oss << remainder1;
-        string remainder2 = oss.str();
-        assignValue(var, remainder2);
-
-    }
-
-    void modValue(string var, string value)
-    {
-        T divisor;
-        istringstream(value) >> divisor;
-        Variable<T> *vptr = static_cast<Variable<T> *>(runningProgram[var]);
-        T dividend = vptr->getValue();
-        T remainder1 = dividend % divisor;
-        ostringstream oss;
-        oss << remainder1;
-        string remainder2 = oss.str();
-        assignValue(var, remainder2);
-
-    }
-};
-
-// Ignore all this for now:
+// template <typename T> // Template, so that a variable can accept any datatype
 struct Datastruct : public DeclObject
 {
 
@@ -309,76 +55,6 @@ struct Datastruct : public DeclObject
 };
 
 const int SIZE = 3;
-template <class T>
-struct Stack : public Datastruct 
-{
-    T data[SIZE];
-    int top;
-
-    Stack()
-    {
-        top = -1;
-    }
-
-    void push(T V)
-    {
-        if (isFull())
-        {
-            cout << "Full" << endl;
-            return;
-        }
-        top = top+1;
-        data[top] = V;
-
-    }
-
-    void pop()
-    {
-        if (isEmpty()) //If the stack is empty:
-        {
-            cout << "Empty" << endl;
-            return;
-        }
-        data[top] = 0;
-        top = top-1;
-
-    }
-
-    T Top()
-    {
-        return data[top];
-
-    }
-
-    bool isFull()
-    {
-        return top == SIZE-1;
-
-    }
-
-    bool isEmpty()
-    {
-        return top == -1;
-    }
-
-    void printDS()
-    {
-        if (isEmpty()) //If the stack is empty:
-        {
-            cout << "Empty" << endl;
-            return;
-        }
-
-        //int n = sizeof(data) / sizeof(data[0]);
-        for (int i = top; i > -1; i--) {
-            cout << data[i] << ":";
-        }
-        cout << endl;
-
-    }
-
-};
-
 template <class T>
 struct Queue : public Datastruct
 {
@@ -410,18 +86,6 @@ struct Queue : public Datastruct
                 }
                 cout << endl;
         }      
-};
-
-
-struct BinarySearchTree : public Datastruct
-{
-
-};
-
-struct Vector : public Datastruct
-{
-
-
 };
 
 class Program
@@ -465,7 +129,6 @@ public:
         runningProgram.clear();
     }
 
-
     void parseCommands()
     {
         for (auto c : commands) // for each of the user's commands
@@ -477,22 +140,14 @@ public:
             s >> commandType;
             if (commandType.compare("Var") == 0)
             {
-                if (numOfWords == 4) // for data structure Var <DS type> <Data type> <DS Name> (implement later)
+                if (numOfWords == 4) 
                 {
                     //Datastruct v;
-                    string dsType; //data structure type
-                    string varType;//variable type
-                    s >> dsType;                 // stores the second word (the data structure type) from user's command to the object
-                    s >> varType;               // stores the third word (the variable type)
-                    if (dsType == "Stack")
-                    {
-                        Stack<int> *v= new Stack<int>;
-                        v->cmd = commandType;
-                        v->dstype = dsType;
-                        v->itemtype = varType;
-                        s >> v->dsName;
-                        runningProgram[v->dsName] = v;
-                    }
+                    string dsType;  //data structure type
+                    string varType; //variable type
+                    s >> dsType;    // stores the second word (the data structure type) from user's command to the object
+                    s >> varType;    // stores the third word (the variable type)
+
                     if (dsType == "Queue")
                     {
                         Queue<int> *v= new Queue<int>;
@@ -501,409 +156,117 @@ public:
                         v->itemtype = varType;
                         s >> v->dsName;
                         runningProgram[v->dsName] = v;
-                    } 
-
-                }
-                else
-                { // for variable Var <var type> <var name>
-                    string DStype = "Variable";
-                    string varType; //data type
-                    s >> varType;
-                    if (varType == "real")
-                    {
-                        Variable<double> *v = new Variable<double>;
-                        v->cmd = commandType;
-                        v->dstype = DStype;
-                        v->itemtype = varType;
-                        s >> v->dsName;
-                        runningProgram[v->dsName] = v; // add object to the runningProgram, key is dsName, therefore dsName should be unique
-                    }
-                    else if (varType == "integer")
-                    {
-                        Variable<int> *v = new Variable<int>;
-                        v->cmd = commandType;
-                        v->dstype = DStype;
-                        v->itemtype = varType;
-                        s >> v->dsName;
-                        runningProgram[v->dsName] = v;
-                        // cout << "Here, I'm creating var: " << &v << endl;
-                    }
-                    else if (varType == "bool")
-                    {
-                        Variable<bool> *v = new Variable<bool>;
-                        v->cmd = commandType;
-                        v->dstype = DStype;
-                        v->itemtype = varType;
-                        s >> v->dsName;
-                        runningProgram[v->dsName] = v;
-                    }
-                    else if (varType == "pointer")
-                    {
-                        Variable<void *> v;
-                        v.cmd = commandType;
-                        v.dstype = DStype;
-                        v.itemtype = varType;
-                        s >> v.dsName;
-                        runningProgram[v.dsName] = &v;
                     }
                 }
+            
             }
 
-            //FOR SABRINA, STACK COMMANDS LINE 515-556
-            if (commandType.compare("push") == 0) // Push <ds Name> <value|var>
+            if (commandType.compare("push") == 0) 
             {
                 string dsName; // stores the data structure name
                 string value;  // stores value or variable
                 s >> dsName; //getting the data structure name and storing to dsName
                 s >> value; //getting value that user wants to push and storing to value as string
-                string varType = runningProgram[dsName]->getItemtype();//GETTING THE VARIABLE TYPE OF THE DATA STRUCTURE
+                string varType = runningProgram[dsName]->getItemtype();
+                
                 if (varType == "integer")//FOR NOW, ONLY INTEGER
                 {
-                    Stack<int> *v = static_cast<Stack<int> *>(runningProgram[dsName]); //runningProgram[dsName] is a declObject* pointer, must cast to its derived class Stack in order to access methods in Stack class (push, pop, etc)
-                    if (runningProgram.find(value) != runningProgram.end()) //two ways to push number into stack, through a variable (push st x) or just with a singular number (push st 5), this will check whether the value to push is a Variable (x) or Number (5) by finding if its in runningprogram map
+                    Queue<int> *v = static_cast<Queue<int> *>(runningProgram[dsName]); 
+                    
+                    if (commandType.compare("push") == 0) 
                     {
-                        Variable<int> *vptr = static_cast<Variable<int> *>(runningProgram[value]); //if it is a variable, static cast the declObject* to a variable* in order to access methods of the variable class (getValue)
-                        int value = vptr->getValue();
-                        v->push(value); //push the value to stack
-
-                    }
-                    else //else, pushing just a number (push st 5)
-                    {
-                        v->push(stoi(value)); //turn string to int then push
+                        v->Push(); 
                     }
                 }
-            }
 
-            if (commandType.compare("pop") == 0) // pop <ds Name>
+            }
+            if(commandType.compare("pop") == 0) 
             {
                 string dsName; // stores the data structure name
                 s >> dsName; //getting the data structure name and storing to dsName
                 string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
-                {
-                    Stack<int> *v = static_cast<Stack<int> *>(runningProgram[dsName]);
-                    v->pop();
-                }
-            }
 
-            if (commandType.compare("top")==0)//WILL IMPLEMENT LATER
-            {
-                string dsName;
-                string varName;
-                s >> dsName;
-                s >> varName;
-                string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
-                {
-                    Stack<int> *vptr = static_cast<Stack<int> *>(runningProgram[dsName]);
-                    Variable<int> *vptr2 = static_cast<Variable<int> *>(runningProgram[varName]);
-                    int value = vptr->Top();
-                    vptr2->setValue(value);
-                }
-            }
-
-            if (commandType.compare("isEmpty")==0)//WILL IMPLEMENT LATER
-            {
-                string dsName;
-                string varName;
-                s >> dsName;
-                s >> varName;
-                string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
-                {
-                    Stack<int> *vptr = static_cast<Stack<int> *>(runningProgram[dsName]);
-                    Variable<int> *vptr2 = static_cast<Variable<int> *>(runningProgram[varName]);
-                    if(vptr->isEmpty())
-                    {
-                        vptr2->setValue(1);
-                    }
-                    else
-                    {
-                        vptr2->setValue(0);
-                    }
-                }
-            }
-
-            if (commandType.compare("isFull")==0)//WILL IMPLEMENT LATER
-            {
-                string dsName;
-                string varName;
-                s >> dsName;
-                s >> varName;
-                string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
-                {
-                    Stack<int> *vptr = static_cast<Stack<int> *>(runningProgram[dsName]);
-                    Variable<int> *vptr2 = static_cast<Variable<int> *>(runningProgram[varName]);
-                    if(vptr->isFull())
-                    {
-                        vptr2->setValue(1);
-                    }
-                    else
-                    {
-                        vptr2->setValue(0);
-                    }
-                }
-            }
-            //END OF STACK COMMANDS
-
-            //Queue
-            if (commandType.compare("Push") == 0) // Push <ds Name> <value|var>
-            {
-                string dsName; // stores the data structure name
-                string value;  // stores value or variable
-                s >> dsName; //getting the data structure name and storing to dsName
-                s >> value; //getting value that user wants to push and storing to value as string
-                string varType = runningProgram[dsName]->getItemtype();//GETTING THE VARIABLE TYPE OF THE DATA STRUCTURE
                 if (varType == "integer")//FOR NOW, ONLY INTEGER
-                {
-                    Queue<int> *v = static_cast<Queue<int> *>(runningProgram[dsName]); //runningProgram[dsName] is a declObject* pointer, must cast to its derived class Stack in order to access methods in Stack class (push, pop, etc)
-                    if (runningProgram.find(value) != runningProgram.end()) //two ways to push number into stack, through a variable (push st x) or just with a singular number (push st 5), this will check whether the value to push is a Variable (x) or Number (5) by finding if its in runningprogram map
-                    {
-                        Variable<int> *vptr = static_cast<Variable<int> *>(runningProgram[value]); //if it is a variable, static cast the declObject* to a variable* in order to access methods of the variable class (getValue)
-                        int value = vptr->getValue();
-                        v->Push(value); //push the value to queue
-
-                    }
-                    else //else, pushing just a number (push q 5)
-                    {
-                        v->Push(stoi(value)); //turn string to int then push
-                    }
-                }
-            }
-
-            if (commandType.compare("Pop") == 0) // pop <ds Name>
-            {
-                string dsName; // stores the data structure name
-                s >> dsName; //getting the data structure name and storing to dsName
-                string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
                 {
                     Queue<int> *v = static_cast<Queue<int> *>(runningProgram[dsName]);
-                    v->Pop();
-                }
-            }
-
-            if (commandType.compare("Front")==0)
-            {
-                string dsName;
-                string varName;
-                s >> dsName;
-                s >> varName;
-                string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
-                {
-                    Queue<int> *vptr = static_cast<Queue<int> *>(runningProgram[dsName]);
-                    Variable<int> *vptr2 = static_cast<Variable<int> *>(runningProgram[varName]);
-                    int value = vptr->Front();
-                    vptr2->setValue(value);
-                }
-            }
-
-            if (commandType.compare("Back")==0)
-            {
-                string dsName;
-                string varName;
-                s >> dsName;
-                s >> varName;
-                string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
-                {
-                    Queue<int> *vptr = static_cast<Queue<int> *>(runningProgram[dsName]);
-                    Variable<int> *vptr2 = static_cast<Variable<int> *>(runningProgram[varName]);
-                    int value = vptr->Back();
-                    vptr2->setValue(value);
-                }
-            }
-
-
-
-            if (commandType.compare("IsEmpty")==0)
-            {
-                string dsName;
-                string varName;
-                s >> dsName;
-                s >> varName;
-                string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
-                {
-                    Queue<int> *vptr = static_cast<Queue<int> *>(runningProgram[dsName]);
-                    Variable<int> *vptr2 = static_cast<Variable<int> *>(runningProgram[varName]);
-                    if(vptr->Empty())
+                    if (commandType.compare("pop") == 0) 
                     {
-                        vptr2->setValue(1);
-                    }
-                    else
-                    {
-                        vptr2->setValue(0);
+                        v->Pop(); 
+                    }                    
+                }
+            }
+
+            if (commandType.compare("front") == 0)
+            {
+                string dsName; 
+                s >> dsName; 
+
+                string nodeValue;
+                s >> nodeValue;
+
+                string value;  
+                s >> value; 
+                string varType = runningProgram[dsName]->getItemtype();
+
+                if (varType == "integer")//FOR NOW, ONLY INTEGER
+                {
+                    Queue<int> *v = static_cast<Queue<int> *>(runningProgram[dsName]);
+                    if (commandType.compare("front") == 0) 
+                    {   
+                        v->Front(); 
                     }
                 }
             }
 
-            if (commandType.compare("IsFull")==0)
+            if (commandType.compare("back") == 0)
             {
-                string dsName;
-                string varName;
-                s >> dsName;
-                s >> varName;
+                string dsName; 
+                s >> dsName; 
+
+                string nodeValue;
+                s >> nodeValue;
+
+                string value;  
+                s >> value; 
                 string varType = runningProgram[dsName]->getItemtype();
-                if (varType == "integer")
+
+                if (varType == "integer")//FOR NOW, ONLY INTEGER
                 {
-                    Queue<int> *vptr = static_cast<Queue<int> *>(runningProgram[dsName]);
-                    Variable<int> *vptr2 = static_cast<Variable<int> *>(runningProgram[varName]);
-                    if(vptr->Full())
-                    {
-                        vptr2->setValue(1);
-                    }
-                    else
-                    {
-                        vptr2->setValue(0);
+                    Queue<int> *v = static_cast<Queue<int> *>(runningProgram[dsName]);
+                    if (commandType.compare("back") == 0) 
+                    {   
+                        v->Back(); 
                     }
                 }
             }
-            //End of Queue
 
-
-            if (commandType.compare("=") == 0 || commandType.compare("+") == 0 || commandType.compare("-") == 0 || commandType.compare("*") == 0 || commandType.compare("/") == 0 || commandType.compare("%") == 0 || commandType.compare("print") == 0) // need to distinguish between print ds v print variable
+            if (commandType.compare("print") == 0) 
             {
-                string var; //variable name /ds name
+                string var; 
                 s >> var;
                 string varType = runningProgram[var]->getItemtype();
 
                 if (varType == "integer")
                 {
-                    operations<int> o(runningProgram);
-                    if (commandType.compare("=") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.assg_commands(var, value);
-                    }
-                    if (commandType.compare("+") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.addition(var, value);
-                    }
-                    if (commandType.compare("-") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.subtraction(var, value);
-                    }
-                    if (commandType.compare("*") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.multiplication(var, value);
-                    }
-                    if (commandType.compare("/") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.division(var, value);
-                    }
-                    if (commandType.compare("%") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.mod(var, value);
-                    }
                     if (commandType.compare("print") == 0)
                     {
-                        string dstype = runningProgram[var]->getDsType(); //ds or variable
-                        if (dstype.compare("Stack")==0)//if stack, then use the printDs inside the stack function to print
-                        {
-                            Stack<int> *v = static_cast<Stack<int> *>(runningProgram[var]);
-                            v->printDS();
-                        }
-                        else // else, printing a variable (Var integer x, = x 5, print x)
-                        {
-                            o.print_command(var);
-                        }
-                        if (dstype.compare("Queue")==0)//if queue, then use the printDs inside the queue function to print
+                        string dstype = runningProgram[var]->getDsType(); 
+                        if (dstype.compare("Queue")==0)
                         {
                             Queue<int> *v = static_cast<Queue<int> *>(runningProgram[var]);
                             v->printDS();
                         }
                     }
                 }
-                if (varType == "real")
-                {
-                    operations<double> o(runningProgram);
-                    if (commandType.compare("=") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.assg_commands(var, value);
-                    }
-                    if (commandType.compare("+") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.addition(var, value);
-                    }
-                    if (commandType.compare("-") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.subtraction(var, value);
-                    }
-                    if (commandType.compare("*") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.multiplication(var, value);
-                    }
-                    if (commandType.compare("/") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.division(var, value);
-                    }
-                    if (commandType.compare("print") == 0)
-                    {
-                        o.print_command(var);
-                    }
-                }
-                if (varType == "bool")
-                {
-                    operations<bool> o(runningProgram);
-                    if (commandType.compare("=") == 0)
-                    {
-                        string value;
-                        s >> value;
-                        o.assg_commands(var, value);
-                    }
-                    if (commandType.compare("print") == 0)
-                    {
-                        o.print_command(var);
-                    }
-                }
-                if (varType == "pointer")
-                {
-                    operations<void *> s(runningProgram);
-                }
+                
             }
+       
 
-            // Will implement later:
-            //  if (commandType.compare("Delete") == 0)
-            //  {
-            //      string dsName;
-            //      s >> dsName;
-            //      runningProgram.erase(v.dsName == dsName);
-            //  }
+            
+
+
         }
     }
-
-    // May be deleted later:
-    //  void print()
-    //  {
-    //      for (auto c : commands)
-    //      {
-    //          cout << c << endl;
-    //      }
-    //  }
 };
 
 int main()
@@ -914,3 +277,4 @@ int main()
     p.deallocProgram();
     cout << "Program ended" << endl;
 }
+
