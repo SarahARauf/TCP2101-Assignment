@@ -68,7 +68,7 @@ struct Queue : public Datastruct
         T Back() { return queue.back(); } // return elements at the back of the queue
         int Size() { return queue.size(); } // number of elements in the queue
         bool Empty() { return queue.empty(); } // return true if queue is empty and otherwise
-        bool Full() { return false; }
+        bool Full() { return false; } 
 
         void printDS()
         {
@@ -175,7 +175,7 @@ public:
                     
                     if (commandType.compare("push") == 0) 
                     {
-                        v->Push(); 
+                        v->Push(stoi(value)); //turn string to int then push
                     }
                 }
 
@@ -213,6 +213,7 @@ public:
                     Queue<int> *v = static_cast<Queue<int> *>(runningProgram[dsName]);
                     if (commandType.compare("front") == 0) 
                     {   
+                
                         v->Front(); 
                     }
                 }
@@ -236,6 +237,50 @@ public:
                     if (commandType.compare("back") == 0) 
                     {   
                         v->Back(); 
+                    }
+                }
+            }
+
+            if (commandType.compare("isFull") == 0)
+            {
+                string dsName; 
+                s >> dsName; 
+
+                string nodeValue;
+                s >> nodeValue;
+
+                string value;  
+                s >> value; 
+                string varType = runningProgram[dsName]->getItemtype();
+
+                if (varType == "integer")//FOR NOW, ONLY INTEGER
+                {
+                    Queue<int> *v = static_cast<Queue<int> *>(runningProgram[dsName]);
+                    if (commandType.compare("isFull") == 0) 
+                    {   
+                        v->Full(); 
+                    }
+                }
+            }
+
+            if (commandType.compare("isEmpty") == 0)
+            {
+                string dsName; 
+                s >> dsName; 
+
+                string nodeValue;
+                s >> nodeValue;
+
+                string value;  
+                s >> value; 
+                string varType = runningProgram[dsName]->getItemtype();
+
+                if (varType == "integer")//FOR NOW, ONLY INTEGER
+                {
+                    Queue<int> *v = static_cast<Queue<int> *>(runningProgram[dsName]);
+                    if (commandType.compare("isEmpty") == 0) 
+                    {   
+                        v->Empty(); 
                     }
                 }
             }
