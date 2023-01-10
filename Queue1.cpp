@@ -80,7 +80,7 @@ struct Queue : public Datastruct
 
             for (int i = 0; i < Size(); i++)
                 {
-                cout << Front() << " ";
+                cout << Front() << ":";
                 Push(Front());
                 Pop();
                 }
