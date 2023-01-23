@@ -78,7 +78,15 @@ void Program::parseCommands()
                         s >> v->dsName;
                         runningProgram[v->dsName] = v;
                     }
-
+                    if (dsType == "SLL")
+                    {
+                        SingleLinkedList<int> *v= new SingleLinkedList<int>;
+                        v->cmd = commandType;
+                        v->dstype = dsType;
+                        v->itemtype = varType;
+                        s >> v->dsName;
+                        runningProgram[v->dsName] = v;
+                    }
                 }
                 if (varType == "real")
                 {
@@ -100,7 +108,15 @@ void Program::parseCommands()
                         s >> v->dsName;
                         runningProgram[v->dsName] = v;
                     }
-
+                    if (dsType == "SLL")
+                    {
+                        SingleLinkedList<double> *v= new SingleLinkedList<double>;
+                        v->cmd = commandType;
+                        v->dstype = dsType;
+                        v->itemtype = varType;
+                        s >> v->dsName;
+                        runningProgram[v->dsName] = v;
+                    }
                 }
             }
             else
@@ -781,6 +797,187 @@ void Program::parseCommands()
                 }
             }
         }
+        
+         // BEGINNING OF SLL & DLL COMMANDS
+        else if (commandType.compare("AddE") == 0|| commandType.compare("DelE") == 0 || commandType.compare("AddF") == 0 || commandType.compare("DelF") == 0 || commandType.compare("AddA") == 0)
+        {
+            string dsName;
+            s >> dsName;
+
+            if (commandType.compare("DelE") == 0 || commandType.compare("DelF") == 0)
+            {   
+                string varType = runningProgram[dsName]->getItemtype(); //GETTING THE VARIABLE TYPE OF THE DATA STRUCTURE
+
+                if (varType == "integer")
+                {   
+                    string dsType = runningProgram[dsName]->getDsType();
+
+                    if(dsType == "SLL")
+                    {
+                        SingleLinkedList<int> *v = static_cast<SingleLinkedList<int> *>(runningProgram[dsName]);
+                        if (commandType.compare("DelE") == 0)
+                        {
+                            v->removeFromTail();
+                        }
+                        else if (commandType.compare("DelF") == 0)
+                        {
+                            v->removeFromHead();
+                        }
+                    }
+//                     if(dsType == "DLL")
+//                     {
+//                         DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
+//                         if (commandType.compare("DelE") == 0)
+//                         {
+//                             v->removeFromTail();
+//                         }
+//                         else if (commandType.compare("DelF") == 0)
+//                         {
+//                             v->removeFromHead();
+//                         }
+//                     }
+                }
+
+                if (varType == "real")
+                {   
+                    string dsType = runningProgram[dsName]->getDsType();
+
+                    if(dsType == "SLL")
+                    {
+                        SingleLinkedList<double> *v = static_cast<SingleLinkedList<double> *>(runningProgram[dsName]);
+                        if (commandType.compare("DelE") == 0)
+                        {
+                            v->removeFromTail();
+                        }
+                        else if (commandType.compare("DelF") == 0)
+                        {
+                            v->removeFromHead();
+                        }
+                    }
+//                     if(dsType == "DLL")
+//                     {
+//                         DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
+//                         if (commandType.compare("DelE") == 0)
+//                         {
+//                             v->removeFromTail();
+//                         }
+//                         else if (commandType.compare("DelF") == 0)
+//                         {
+//                             v->removeFromHead();
+//                         }
+//                     }
+                }
+            }
+
+            else if (commandType.compare("AddE") == 0 || commandType.compare("AddF") == 0)
+            {
+                string value;
+                s >> value;
+
+                if (commandType.compare("AddE") == 0 || commandType.compare("AddF") == 0)
+                {
+                    string varType = runningProgram[dsName]->getItemtype(); //GETTING THE VARIABLE TYPE OF THE DATA STRUCTURE
+
+                    if (varType == "integer")
+                    {   
+                        string dsType = runningProgram[dsName]->getDsType();
+
+                        if(dsType == "SLL")
+                        {
+                            SingleLinkedList<int> *v = static_cast<SingleLinkedList<int> *>(runningProgram[dsName]);
+                            if (commandType.compare("AddE") == 0)
+                            {
+                                v->addToTail(stoi(value));
+                            }
+                            else if (commandType.compare("AddF") == 0)
+                            {
+                                v->addToHead(stoi(value));
+                            }
+                        }
+//                         if(dsType == "DLL")
+//                         {
+//                             DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
+//                             if (commandType.compare("AddE") == 0)
+//                             {
+//                                 v->addToTail(stoi(value));
+//                             }
+//                             else if (commandType.compare("AddF") == 0)
+//                             {
+//                                 v->addToHead(stoi(value));
+//                             }
+//                         }
+                    }
+                    if (varType == "real")
+                    {   
+                        string dsType = runningProgram[dsName]->getDsType();
+
+                        if(dsType == "SLL")
+                        {
+                            SingleLinkedList<double> *v = static_cast<SingleLinkedList<double> *>(runningProgram[dsName]);
+                            if (commandType.compare("AddE") == 0)
+                            {
+                                v->addToTail(stod(value));
+                            }
+                            else if (commandType.compare("AddF") == 0)
+                            {
+                                v->addToHead(stod(value));
+                            }
+                        }
+//                         if(dsType == "DLL")
+//                         {
+//                             DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
+//                             if (commandType.compare("AddE") == 0)
+//                             {
+//                                 v->addToTail(stod(value));
+//                             }
+//                             else if (commandType.compare("AddF") == 0)
+//                             {
+//                                 v->addToHead(stod(value));
+//                             }
+//                         }
+                    }
+                }
+            }
+            else // if (commandType.compare("AddA") == 0)
+            {
+                string nodeValue;
+                string value;
+
+                s >> nodeValue;
+                s >> value;
+
+                string varType = runningProgram[dsName]->getItemtype();//GETTING THE VARIABLE TYPE OF THE DATA STRUCTURE
+                if(varType == "integer")
+                {
+                    string dsType = runningProgram[dsName]->getDsType();
+                    if (dsType == "SLL")
+                    {
+                        SingleLinkedList<int> *v = static_cast<SingleLinkedList<int> *>(runningProgram[dsName]);
+                        v->insertAfterNode(stoi(nodeValue),stoi(value));
+                    }
+//                     if (dsType == "DLL")
+//                     {
+//                         DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
+//                         v->insertAfterNode(stoi(nodeValue),stoi(value));
+//                     }
+                }
+                if(varType == "real")
+                {
+                    string dsType = runningProgram[dsName]->getDsType();
+                    if (dsType == "SLL")
+                    {
+                        SingleLinkedList<double> *v = static_cast<SingleLinkedList<double> *>(runningProgram[dsName]);
+                        v->insertAfterNode(stoi(nodeValue),stod(value));
+                    }
+//                     if (dsType == "DLL")
+//                     {
+//                         DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
+//                         v->insertAfterNode(stoi(nodeValue),stod(value));
+//                     }
+                }
+            }
+        }
+        // END OF SLL & DLL COMMANDS
 
         // Will implement later:
         //  if (commandType.compare("Delete") == 0)
