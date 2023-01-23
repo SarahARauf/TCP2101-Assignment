@@ -15,6 +15,8 @@ template <typename T>
 class Stack;
 template <typename T>
 class Queue;
+template <typename T>
+class SingleLinkedList;
 
 
 
@@ -31,6 +33,7 @@ class Queue;
 #include "Datastruct.h"
 #include "Stack.h"
 #include "Queue.h"
+#include "Sll.h"
 using namespace std;
 
 
