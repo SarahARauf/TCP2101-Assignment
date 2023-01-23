@@ -117,6 +117,18 @@ void Program::parseCommands()
                         s >> v->dsName;
                         runningProgram[v->dsName] = v;
                     }
+//                     if(dsType == "DLL")
+//                     {
+//                         DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
+//                         if (commandType.compare("AddE") == 0)
+//                         {
+//                             v->addToTail(stod(value));
+//                         }
+//                         else if (commandType.compare("AddF") == 0)
+//                         {
+//                             v->addToHead(stod(value));
+//                         }
+//                     }
                 }
             }
             else
