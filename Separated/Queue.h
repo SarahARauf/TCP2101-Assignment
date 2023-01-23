@@ -32,7 +32,7 @@ public:
     int SIZE;
     Queue() { SIZE = 3; }
     Queue(const Queue<T> &copyFrom);
-    ~Queue(){};
+    ~Queue(){cout << "deleted a queue" << endl;};
     bool isFull();
     bool isEmpty();          // return true if queue is empty and otherwise
     void pop();              // remove elementn at the front
@@ -41,6 +41,7 @@ public:
     T Back();                // return elements at the back of the queue
     void printDS();
     bool searchDS( T value);    
+    void sortDS(string choice);
 };
 
 #endif

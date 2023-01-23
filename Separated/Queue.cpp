@@ -71,3 +71,23 @@ bool Queue<T>::searchDS( T value)
 {
     return this->search(data, value);
 }
+
+
+template <typename T>
+void Queue<T>::sortDS(string choice)
+{
+    if (isEmpty()) // If the stack is empty:
+    {
+        cout << "Empty" << endl;
+        return;
+    }
+    if (choice == "ASC")
+    {
+        this->bubbleASC(data);
+    }
+    else
+    {
+        this->bubbleDESC(data);
+    }
+
+}

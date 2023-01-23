@@ -45,10 +45,10 @@ class Program
 
 public:
     Program();
+    ~Program();
 
     int countWords(string &str);
 
-    void deallocProgram();
 
     void parseCommands();
 

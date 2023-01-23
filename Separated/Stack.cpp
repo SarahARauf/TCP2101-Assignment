@@ -86,3 +86,22 @@ bool Stack<T>::searchDS(T value)
     //  }
     //  return false;
 }
+
+template <typename T>
+void Stack<T>::sortDS(string choice)
+{
+    if (isEmpty()) // If the stack is empty:
+    {
+        cout << "Empty" << endl;
+        return;
+    }
+    if (choice == "ASC")
+    {
+        this->bubbleASC(data);
+    }
+    else
+    {
+        this->bubbleDESC(data);
+    }
+
+}

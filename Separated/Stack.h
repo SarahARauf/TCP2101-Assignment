@@ -39,7 +39,7 @@ class Stack : public Datastruct<T>
 
     Stack(const Stack<T> &copyFrom); // copy constructor
 
-    ~Stack(){};
+    ~Stack(){ cout << "deleted a stack" << endl;};
 
     bool isFull();
 
@@ -54,6 +54,8 @@ class Stack : public Datastruct<T>
     void printDS();
 
     bool searchDS(T value);
+
+    void sortDS(string choice);
 };
 
 #endif

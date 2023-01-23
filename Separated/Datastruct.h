@@ -36,7 +36,11 @@ class Datastruct : public DeclObject
 {
     public:
     // virtual void function for sort, search, clone
-    // virtual void sortDS()=0;
+    template <template <typename, typename> class Container>
+    void bubbleASC(Container<T, std::allocator<T>> &container);
+
+    template <template <typename, typename> class Container>
+    void bubbleDESC(Container<T, std::allocator<T>> &container);
     // virtual void searchDS()=0;
     template <template <typename, typename> class Container>
     bool search(const Container<T, std::allocator<T>> &container, const T &value);
