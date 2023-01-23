@@ -10,6 +10,8 @@ template <typename T>
 class Datastruct;
 template <typename T>
 class Stack;
+template <typename T>
+class SingleLinkedList;
 class Program;
 
 
