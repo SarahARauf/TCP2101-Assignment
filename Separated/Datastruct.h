@@ -12,6 +12,8 @@ template <typename T>
 class Stack;
 template <typename T>
 class SingeLinkedList;
+template <typename T>
+class DoubleLinkedList;
 class Program;
 
 
@@ -27,6 +29,7 @@ class Program;
 #include "operations.h"
 #include "Stack.h"
 #include "Sll.h"
+#include "Dll.h"
 #include "Program.h"
 using namespace std;
 
