@@ -656,8 +656,7 @@ void Program::parseCommands()
             }
 
         }
-
-
+        
         else if (commandType.compare("!if") == 0)
         {
             //cout << "in if" << endl;
@@ -735,6 +734,14 @@ void Program::parseCommands()
                     {
                         static_cast<Queue<int> *>(runningProgram[var])->printDS();
                     }
+                    else if (dstype.compare("SLL") == 0)
+                    {
+                        static_cast<SingleLinkedList<int> *>(runningProgram[var])->printDS();
+                    }
+//                     else if (dstype.compare("DLL") == 0)
+//                     {
+//                         static_cast<DoubleLinkedList<int> *>(runningProgram[var])->printDS();
+//                     }
                     else // else, printing a variable (Var integer x, = x 5, print x)
                     {
                         o.print_command(var);
@@ -785,6 +792,14 @@ void Program::parseCommands()
                     {
                         static_cast<Queue<double> *>(runningProgram[var])->printDS();
                     }
+                     else if (dstype.compare("SLL") == 0)
+                    {
+                        static_cast<SingleLinkedList<double> *>(runningProgram[var])->printDS();
+                    }
+//                     else if (dstype.compare("DLL") == 0)
+//                     {
+//                         static_cast<DoubleLinkedList<double> *>(runningProgram[var])->printDS();
+//                     }
                     else // else, printing a variable (Var integer x, = x 5, print x)
                     {
                         o.print_command(var);
