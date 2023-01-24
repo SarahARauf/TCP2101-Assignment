@@ -87,6 +87,15 @@ void Program::parseCommands()
                         s >> v->dsName;
                         runningProgram[v->dsName] = v;
                     }
+                    if (dsType == "DLL")
+                    {
+                        DoubleLinkedList<int> *v= new DoubleLinkedList<int>;
+                        v->cmd = commandType;
+                        v->dstype = dsType;
+                        v->itemtype = varType;
+                        s >> v->dsName;
+                        runningProgram[v->dsName] = v;
+                    }
                 }
                 if (varType == "real")
                 {
@@ -117,18 +126,18 @@ void Program::parseCommands()
                         s >> v->dsName;
                         runningProgram[v->dsName] = v;
                     }
-//                     if(dsType == "DLL")
-//                     {
-//                         DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
-//                         if (commandType.compare("AddE") == 0)
-//                         {
-//                             v->addToTail(stod(value));
-//                         }
-//                         else if (commandType.compare("AddF") == 0)
-//                         {
-//                             v->addToHead(stod(value));
-//                         }
-//                     }
+                    if(dsType == "DLL")
+                    {
+                        DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
+                        if (commandType.compare("AddE") == 0)
+                        {
+                            v->addToTail(stod(value));
+                        }
+                        else if (commandType.compare("AddF") == 0)
+                        {
+                            v->addToHead(stod(value));
+                        }
+                    }
                 }
             }
             else
@@ -738,10 +747,10 @@ void Program::parseCommands()
                     {
                         static_cast<SingleLinkedList<int> *>(runningProgram[var])->printDS();
                     }
-//                     else if (dstype.compare("DLL") == 0)
-//                     {
-//                         static_cast<DoubleLinkedList<int> *>(runningProgram[var])->printDS();
-//                     }
+                    else if (dstype.compare("DLL") == 0)
+                    {
+                        static_cast<DoubleLinkedList<int> *>(runningProgram[var])->printDS();
+                    }
                     else // else, printing a variable (Var integer x, = x 5, print x)
                     {
                         o.print_command(var);
@@ -796,10 +805,10 @@ void Program::parseCommands()
                     {
                         static_cast<SingleLinkedList<double> *>(runningProgram[var])->printDS();
                     }
-//                     else if (dstype.compare("DLL") == 0)
-//                     {
-//                         static_cast<DoubleLinkedList<double> *>(runningProgram[var])->printDS();
-//                     }
+                    else if (dstype.compare("DLL") == 0)
+                    {
+                        static_cast<DoubleLinkedList<double> *>(runningProgram[var])->printDS();
+                    }
                     else // else, printing a variable (Var integer x, = x 5, print x)
                     {
                         o.print_command(var);
@@ -851,18 +860,18 @@ void Program::parseCommands()
                             v->removeFromHead();
                         }
                     }
-//                     if(dsType == "DLL")
-//                     {
-//                         DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
-//                         if (commandType.compare("DelE") == 0)
-//                         {
-//                             v->removeFromTail();
-//                         }
-//                         else if (commandType.compare("DelF") == 0)
-//                         {
-//                             v->removeFromHead();
-//                         }
-//                     }
+                    if(dsType == "DLL")
+                    {
+                        DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
+                        if (commandType.compare("DelE") == 0)
+                        {
+                            v->removeFromTail();
+                        }
+                        else if (commandType.compare("DelF") == 0)
+                        {
+                            v->removeFromHead();
+                        }
+                    }
                 }
 
                 if (varType == "real")
@@ -881,18 +890,18 @@ void Program::parseCommands()
                             v->removeFromHead();
                         }
                     }
-//                     if(dsType == "DLL")
-//                     {
-//                         DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
-//                         if (commandType.compare("DelE") == 0)
-//                         {
-//                             v->removeFromTail();
-//                         }
-//                         else if (commandType.compare("DelF") == 0)
-//                         {
-//                             v->removeFromHead();
-//                         }
-//                     }
+                    if(dsType == "DLL")
+                    {
+                        DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
+                        if (commandType.compare("DelE") == 0)
+                        {
+                            v->removeFromTail();
+                        }
+                        else if (commandType.compare("DelF") == 0)
+                        {
+                            v->removeFromHead();
+                        }
+                    }
                 }
             }
 
@@ -921,18 +930,18 @@ void Program::parseCommands()
                                 v->addToHead(stoi(value));
                             }
                         }
-//                         if(dsType == "DLL")
-//                         {
-//                             DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
-//                             if (commandType.compare("AddE") == 0)
-//                             {
-//                                 v->addToTail(stoi(value));
-//                             }
-//                             else if (commandType.compare("AddF") == 0)
-//                             {
-//                                 v->addToHead(stoi(value));
-//                             }
-//                         }
+                        if(dsType == "DLL")
+                        {
+                            DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
+                            if (commandType.compare("AddE") == 0)
+                            {
+                                v->addToTail(stoi(value));
+                            }
+                            else if (commandType.compare("AddF") == 0)
+                            {
+                                v->addToHead(stoi(value));
+                            }
+                        }
                     }
                     if (varType == "real")
                     {   
@@ -950,18 +959,18 @@ void Program::parseCommands()
                                 v->addToHead(stod(value));
                             }
                         }
-//                         if(dsType == "DLL")
-//                         {
-//                             DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
-//                             if (commandType.compare("AddE") == 0)
-//                             {
-//                                 v->addToTail(stod(value));
-//                             }
-//                             else if (commandType.compare("AddF") == 0)
-//                             {
-//                                 v->addToHead(stod(value));
-//                             }
-//                         }
+                        if(dsType == "DLL")
+                        {
+                            DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
+                            if (commandType.compare("AddE") == 0)
+                            {
+                                v->addToTail(stod(value));
+                            }
+                            else if (commandType.compare("AddF") == 0)
+                            {
+                                v->addToHead(stod(value));
+                            }
+                        }
                     }
                 }
             }
@@ -982,11 +991,11 @@ void Program::parseCommands()
                         SingleLinkedList<int> *v = static_cast<SingleLinkedList<int> *>(runningProgram[dsName]);
                         v->insertAfterNode(stoi(nodeValue),stoi(value));
                     }
-//                     if (dsType == "DLL")
-//                     {
-//                         DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
-//                         v->insertAfterNode(stoi(nodeValue),stoi(value));
-//                     }
+                    if (dsType == "DLL")
+                    {
+                        DoubleLinkedList<int> *v = static_cast<DoubleLinkedList<int> *>(runningProgram[dsName]);
+                        v->insertAfterNode(stoi(nodeValue),stoi(value));
+                    }
                 }
                 if(varType == "real")
                 {
@@ -996,11 +1005,11 @@ void Program::parseCommands()
                         SingleLinkedList<double> *v = static_cast<SingleLinkedList<double> *>(runningProgram[dsName]);
                         v->insertAfterNode(stoi(nodeValue),stod(value));
                     }
-//                     if (dsType == "DLL")
-//                     {
-//                         DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
-//                         v->insertAfterNode(stoi(nodeValue),stod(value));
-//                     }
+                    if (dsType == "DLL")
+                    {
+                        DoubleLinkedList<double> *v = static_cast<DoubleLinkedList<double> *>(runningProgram[dsName]);
+                        v->insertAfterNode(stoi(nodeValue),stod(value));
+                    }
                 }
             }
         }
