@@ -27,7 +27,7 @@ using namespace std;
 
 
 template <class T>
-class SingleLinkedList : public Datastruct
+class SingleLinkedList : public Datastruct<T>
 {
     private:
         struct Node 
