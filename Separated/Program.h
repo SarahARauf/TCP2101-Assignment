@@ -17,6 +17,8 @@ template <typename T>
 class Queue;
 template <typename T>
 class SingleLinkedList;
+template <typename T>
+class DoubleLinkedList;
 
 
 
