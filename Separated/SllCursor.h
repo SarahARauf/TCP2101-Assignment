@@ -31,7 +31,7 @@ using namespace std;
 
 
 template <class T>
-class SLListCursor : public DeclObject<T>
+class SLListCursor : public DeclObject
 {
     private:
         SingleLinkedList<T>* list;                      
