@@ -12,6 +12,12 @@ template <typename T>
 class Stack;
 template <typename T>
 class SingleLinkedList;
+template <typename T>
+class DoubleLinkedList;
+template <typename T>
+class SLListCursor;
+template <typename T>
+class DLListCursor;
 class Program;
 
 
