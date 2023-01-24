@@ -31,14 +31,14 @@ int Program::countWords(string &str)
     return counter;
 }
 
-// void Program::deallocProgram()
-// {
-//     // for (auto &item : runningProgram)
-//     // {
-//     //     delete item.second;
-//     //     item.second = nullptr;
-//     // }
-// }
+void Program::deallocProgram()
+{
+    for (auto &item : runningProgram)
+    {
+        delete item.second;
+        item.second = nullptr;
+    }
+}
 
 void Program::parseCommands()
 {
