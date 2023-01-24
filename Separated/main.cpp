@@ -8,6 +8,8 @@ template <typename T>
 class Datastruct;
 template <typename T>
 class Stack;
+template <typename T>
+class SingleLinkedList;
 class Program;
 
 
@@ -23,11 +25,12 @@ class Program;
 #include "operations.h"
 #include "Datastruct.h"
 #include "Stack.h"
+#include "Sll.h"
 #include "Program.h"
 using namespace std;
 
 // make sure you add in your .cpp file below
-//g++ -o main main.cpp DeclObject.cpp Variable.cpp operations.cpp Datastruct.cpp Stack.cpp Queue.cpp Program.cpp
+//g++ -o main main.cpp DeclObject.cpp Variable.cpp operations.cpp Datastruct.cpp Stack.cpp Queue.cpp Sll.cpp Program.cpp
 //.\main.exe
 int main()
 {
