@@ -34,6 +34,7 @@ class SingleLinkedList;
 #include "Stack.h"
 #include "Queue.h"
 #include "Sll.h"
+#include "Dll.h"
 using namespace std;
 
 
@@ -52,7 +53,7 @@ public:
 
     int countWords(string &str);
 
-
+    void deallocProgram();
     void parseCommands();
 
 };
