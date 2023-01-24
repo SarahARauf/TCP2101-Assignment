@@ -164,11 +164,13 @@ bool SingleLinkedList<T>::searchDS(T value)
     return false;
 };
 
+template <class T>
 void SingleLinkedList<T>::cloneDS()
 {
     cout << "Not implemented" << endl;
 };
 
+template <class T>
 void SingleLinkedList<T>::sortDS()
 {
     cout << "Not implemented" << endl;
