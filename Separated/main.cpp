@@ -12,6 +12,10 @@ template <typename T>
 class SingleLinkedList;
 template <typename T>
 class DoubleLinkedList;
+template <typename T>
+class SLListCursor;
+template <typename T>
+class DLListCursor;
 class Program;
 
 
@@ -35,7 +39,7 @@ class Program;
 using namespace std;
 
 // make sure you add in your .cpp file below
-//g++ -o main main.cpp DeclObject.cpp Variable.cpp operations.cpp Datastruct.cpp Stack.cpp Queue.cpp Sll.cpp Dll.cpp Program.cpp
+//g++ -o main main.cpp DeclObject.cpp Variable.cpp operations.cpp Datastruct.cpp Stack.cpp Queue.cpp Sll.cpp Dll.cpp SllCursor.cpp DllCursor.cpp Program.cpp
 //.\main.exe
 int main()
 {
