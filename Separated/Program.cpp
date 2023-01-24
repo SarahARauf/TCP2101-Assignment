@@ -170,6 +170,25 @@ void Program::parseCommands()
                     s >> v->dsName;
                     runningProgram[v->dsName] = v;
                 }
+                else if (varType == "pointer")
+                {
+                    SLListCursor<int> *v = new SLListCursor<int>;
+                    v->cmd = commandType;
+                    v->dstype = DStype;
+                    v->itemtype = varType;
+                    s >> v->dsName;
+                    runningProgram[v->dsName] = v;
+                }
+                // (1) Comment the pointer above and uncomment the one below to access DLL pointer
+                // else if (varType == "pointer")
+                // {
+                //     DLListCursor<int> *v = new DLListCursor<int>;
+                //     v->cmd = commandType;
+                //     v->dstype = DStype;
+                //     v->itemtype = varType;
+                //     s >> v->dsName;
+                //     runningProgram[v->dsName] = v;
+                // }
             }
         }
 
@@ -1011,6 +1030,135 @@ void Program::parseCommands()
             }
         }
         // END OF SLL & DLL COMMANDS
+        
+        // BEGINNING OF SLL/DLL POINTER COMMANDS
+        if (commandType.compare("ptrStart") == 0|| commandType.compare("getNode") == 0 || commandType.compare("nextNode") == 0 || commandType.compare("isEnd") == 0)
+        {
+            // PtrStart <DS Name> <PTR Name>
+            if (commandType.compare("ptrStart") == 0)
+            {
+                string dsName;
+                s >> dsName;
+
+                string ptrName;
+                s >> ptrName;
+
+                // (1) comment this to use DLL pointer
+                SLListCursor<int> *v = static_cast<SLListCursor<int>*>(runningProgram[ptrName]);
+                SingleLinkedList<int>* sl = static_cast<SingleLinkedList<int>*>(runningProgram[dsName]);
+                v->pointToStart(*sl);
+
+                // (2) uncomment this for DLL pointer
+                // DLListCursor<int> *v = static_cast<DLListCursor<int>*>(runningProgram[ptrName]);
+                // DoubleLinkedList<int>* dl = static_cast<DoubleLinkedList<int>*>(runningProgram[dsName]);
+                // v->pointToStart(*dl);
+
+            }
+
+            // getNode <var> <PTR Name>
+            if (commandType.compare("getNode") == 0)
+            {   
+                string var;
+                s >> var;
+                string ptrName;
+                s >> ptrName;
+
+                // (3) comment this to use DLL pointer
+                Variable<int> *vptr1 = static_cast<Variable<int> *>(runningProgram[var]);
+                SLListCursor<int> *vptr2 = static_cast<SLListCursor<int>*>(runningProgram[ptrName]);
+                int value = vptr2->getNodeValue();
+                vptr1->setValue(value);
+
+                // (4) uncomment this for DLL pointer
+                // Variable<int> *vptr1 = static_cast<Variable<int> *>(runningProgram[var]);
+                // DLListCursor<int> *vptr2 = static_cast<DLListCursor<int>*>(runningProgram[ptrName]);
+                // int value = vptr2->getNodeValue();
+                // vptr1->setValue(value);
+            }
+
+            // nextNode <PTR name>
+            if(commandType.compare("nextNode") == 0)
+            {
+                string ptrName;
+                s >> ptrName;
+
+                // (5) comment this to use DLL pointer
+                SLListCursor<int> *v = static_cast<SLListCursor<int>*>(runningProgram[ptrName]);
+                v->moveToNext();
+
+                // (6) uncomment this for DLL pointer
+                // DLListCursor<int> *v = static_cast<DLListCursor<int>*>(runningProgram[ptrName]);
+                // v->moveToNext();
+            }
+
+            // isEnd <PTR Name> <res> 
+            if(commandType.compare("isEnd") == 0)
+            {
+                string ptrName;
+                s >> ptrName;
+
+                string var;
+                s >> var;
+
+                // (7) comment this to use DLL pointer
+                Variable<bool> *vptr1 = static_cast<Variable<bool> *>(runningProgram[var]);
+                SLListCursor<int> *vptr2 = static_cast<SLListCursor<int>*>(runningProgram[ptrName]);
+                bool value = vptr2->checkEnd();
+                vptr1->setValue(value);
+
+                // (8) uncomment this for DLL pointer
+                // Variable<bool> *vptr1 = static_cast<Variable<bool> *>(runningProgram[var]);
+                // DLListCursor<int> *vptr2 = static_cast<DLListCursor<int>*>(runningProgram[ptrName]);
+                // bool value = vptr2->checkEnd();
+                // vptr1->setValue(value);
+            }
+        }
+        // END OF SLL/DLL POINTER COMMANDS
+
+        // (9) Uncomment all of this to access DLL Pointer Commands
+        // BEGINNING OF DLL POINTER COMMANDS
+        // if (commandType.compare("ptrEnd") == 0|| commandType.compare("prevNode") == 0 || commandType.compare("isHead") == 0 )
+        // {
+        //     // ptrEnd <DS Name> <PTR Name>
+        //     if (commandType.compare("ptrEnd") == 0)
+        //     {
+        //         string dsName;
+        //         s >> dsName;
+
+        //         string ptrName;
+        //         s >> ptrName;
+
+        //         DLListCursor<int> *v = static_cast<DLListCursor<int>*>(runningProgram[ptrName]);
+        //         DoubleLinkedList<int>* dl = static_cast<DoubleLinkedList<int>*>(runningProgram[dsName]);
+        //         v->pointToEnd(*dl);
+        //     }
+
+        //     prevNode <PTR name>
+        //     if(commandType.compare("prevNode") == 0)
+        //     {
+        //         string ptrName;
+        //         s >> ptrName;
+
+        //         DLListCursor<int> *v = static_cast<DLListCursor<int>*>(runningProgram[ptrName]);
+        //         v->moveToPrev();
+        //     }
+
+        //     // isHead <PTR Name> <res>
+        //     if(commandType.compare("isHead") == 0)
+        //     {
+        //         string ptrName;
+        //         s >> ptrName;
+
+        //         string var;
+        //         s >> var;
+
+        //         Variable<bool> *vptr1 = static_cast<Variable<bool> *>(runningProgram[var]);
+        //         DLListCursor<int> *vptr2 = static_cast<DLListCursor<int>*>(runningProgram[ptrName]);
+        //         bool value = vptr2->checkEnd();
+        //         vptr1->setValue(value);
+        //     }
+        // }
+        // END OF DLL POINTER COMMANDS
 
         // Will implement later:
         //  if (commandType.compare("Delete") == 0)
