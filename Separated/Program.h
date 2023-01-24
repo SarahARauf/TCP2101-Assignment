@@ -19,6 +19,10 @@ template <typename T>
 class SingleLinkedList;
 template <typename T>
 class DoubleLinkedList;
+template <typename T>
+class SLListCursor;
+template <typename T>
+class DLListCursor;
 
 
 
@@ -37,6 +41,8 @@ class DoubleLinkedList;
 #include "Queue.h"
 #include "Sll.h"
 #include "Dll.h"
+#include "SllCursor.h"
+#include "DllCursor.h"
 using namespace std;
 
 
