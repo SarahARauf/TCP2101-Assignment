@@ -31,7 +31,7 @@ using namespace std;
 
 
 template <class T>
-class DLListCursor : public DeclObject<T>
+class DLListCursor : public DeclObject
 {
     private:
         DoubleLinkedList<T>* list;                      
