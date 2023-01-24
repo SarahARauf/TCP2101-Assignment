@@ -1,7 +1,7 @@
 #include "Sll.h"
-template class Sll<int>;
-template class Sll<float>;
-template class Sll<double>;
+template class SingleLinkedList<int>;
+template class SingleLinkedList<float>;
+template class SingleLinkedList<double>;
 
 
 // Creates new node and initializes it with the provided newValue 
