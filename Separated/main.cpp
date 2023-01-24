@@ -29,6 +29,8 @@ class Program;
 #include "Stack.h"
 #include "Sll.h"
 #include "Dll.h"
+#include "SllCursor.h"
+#include "DllCursor.h"
 #include "Program.h"
 using namespace std;
 
