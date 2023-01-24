@@ -14,6 +14,10 @@ template <typename T>
 class SingeLinkedList;
 template <typename T>
 class DoubleLinkedList;
+template <typename T>
+class SLListCursor;
+template <typename T>
+class DLListCursor;
 class Program;
 
 
@@ -30,6 +34,8 @@ class Program;
 #include "Stack.h"
 #include "Sll.h"
 #include "Dll.h"
+#include "SllCursor.h"
+#include "DllCursor.h"
 #include "Program.h"
 using namespace std;
 
